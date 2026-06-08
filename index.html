@@ -25,10 +25,9 @@
         }
 
         .logo {
-            /* تعديل حجم الصورة من هنا - تم رفعه إلى 1000 */
             width: 800px; 
             height: auto;
-            max-width: 95vw; 
+            max-width: 90vw; 
             margin-bottom: 15px;
             display: block;
             margin-left: auto;
@@ -68,7 +67,7 @@
             font-size: 14px;
         }
 
-        select, input[type="password"], input[type="text"] {
+        input[type="text"] {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
@@ -78,41 +77,15 @@
             box-sizing: border-box;
         }
 
-        select:focus, input:focus {
+        input:focus {
             outline: none;
             border-color: #b84e60; 
             box-shadow: 0 0 5px rgba(184, 78, 96, 0.2);
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #b84e60; 
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #984447; 
-        }
-
-        .error-message {
-            color: red;
-            font-size: 13px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            display: none;
-            text-align: center;
-        }
-
         /* Main View Styles */
         #main-view {
-            display: none; 
+            display: block; /* ظاهر مباشرة الآن */
         }
 
         #welcome-message {
@@ -187,30 +160,8 @@
     </header>
 
     <div class="container">
-        <div id="login-view">
-            <label for="User">User</label>
-            <select id="User">
-                <option value="" disabled selected hidden>Who's this?</option>
-                <option value="Afra">Afra</option>
-                <option value="Dhabia">Dhabia</option>
-                <option value="Fatima">Fatima</option>
-                <option value="Mahra">Mahra</option>
-                <option value="Ms. Aliya">Ms. Aliya</option>
-                <option value="Nouf">Nouf</option>
-                <option value="Salama">Salama</option>
-                <option value="Sulaiman">Sulaiman</option>
-            </select>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password">
-            
-            <div id="error-msg" class="error-message">Incorrect password.</div>
-
-            <button onclick="login()">Log In</button>
-        </div>
-
         <div id="main-view">
-            <h2 id="welcome-message"></h2>
+            <h2 id="welcome-message">Find a Location</h2>
             <input type="text" id="search-bar" placeholder="Search for a department or center..." oninput="filterLocations()">
             
             <ul id="places-list"></ul>
@@ -242,38 +193,10 @@
             { name: "Business Center", location: "GF, Library" }
         ];
 
-        function login() {
-            const User = document.getElementById('User').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-msg');
-
-            if (!User) {
-                errorMsg.textContent = "Please select a user.";
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            let correctPassword;
-            if (User === "Ms. Aliya") {
-                correctPassword = "AliyaZ11111"; 
-            } else {
-                correctPassword = User + "!!"; 
-            }
-
-            if (password === correctPassword) {
-                document.getElementById('login-view').style.display = 'none';
-                document.getElementById('intro-text').style.display = 'none';
-                document.getElementById('main-view').style.display = 'block';
-                
-                const welcomeMsg = document.getElementById('welcome-message');
-                welcomeMsg.innerHTML = "Welcome " + User + "!<br>What place are you looking for?";
-                
-                renderList(departments);
-            } else {
-                errorMsg.textContent = "Incorrect password.";
-                errorMsg.style.display = 'block';
-            }
-        }
+        // تشغيل القائمة مباشرة عند تحميل الصفحة
+        window.onload = function() {
+            renderList(departments);
+        };
 
         const listElement = document.getElementById('places-list');
         const searchInput = document.getElementById('search-bar');
