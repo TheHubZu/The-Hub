@@ -170,6 +170,25 @@
 
     <script>
         const departments = [
+            { name: "The Hub", location: "MF3, GF / FF3, GF" },
+            { name: "Students Accessibility Services (SAS)", location: "LIBRARY, First Floor" },
+            { name: "Students Counseling Center (SCC)", location: "ADMIN, First Floor" },
+            { name: "Students Leadership", location: "MF3, GF" },
+            { name: "Students Careers and Alumni Office", location: "MF3, GF" },
+            { name: "Career Advocate Leaders (CALS)", location: "MF3, GF" },
+            { name: "Peer Assistance Leaders (PALs)", location: "LIBRARY, First Floor" },
+            { name: "Students Life", location: "MF3, 1st / 2nd Floor" },
+            { name: "Wellness Center", location: "MF3, GF" },
+            { name: "Sports Center", location: "FSP : Sports and Recreation Centre" },
+            { name: "Financial Aid", location: "MF3, GF (0.052)" },
+            { name: "Registration", location: "ADMIN, First Floor" },
+            { name: "Center of Students Success", location: "FF3, GF" },
+            { name: "IT", location: "ADMIN, GF" },
+            { name: "Library", location: "1st, 2nd, 3rd Floors" },
+            { name: "Business Center", location: "GF, Library" }
+        ];
+
+        const professors = [
             { name: "Aaina Menon", location: "MF3.2.019" },
             { name: "Abeer Alrasbi", location: "MF3.0.048" },
             { name: "Adam Gentile", location: "MF1.1.010" },
@@ -212,11 +231,8 @@
             { name: "Babar Shah", location: "MF2.0.014" },
             { name: "Brenden Galbraith", location: "MF2.2.041" },
             { name: "Bridget Rice", location: "MF3.2.047" },
-            { name: "Business Center", location: "GF, Library" },
             { name: "Bushra Finaish", location: "MF3.0.051" },
             { name: "Buthaina Fadaq", location: "MF3.1.071" },
-            { name: "Career Advocate Leaders (CALS)", location: "MF3, GF" },
-            { name: "Center of Students Success", location: "FF3, GF" },
             { name: "Christina Greco", location: "MF3.2.035" },
             { name: "Cuicui Zhang", location: "MF1.0.008" },
             { name: "Dana Mashaal", location: "MF3.2.071" },
@@ -241,7 +257,6 @@
             { name: "Fatima AlHarbi", location: "MF2.0.006" },
             { name: "Fatma Said", location: "MF3.1.031" },
             { name: "Fida Al Omari", location: "MF2.1.007" },
-            { name: "Financial Aid", location: "MF3, GF (0.052)" },
             { name: "Ganka Ivanova", location: "MF1.1.031" },
             { name: "Georgios Tsakirakis", location: "MF2.1.035" },
             { name: "Ghada Janem", location: "MF2.1.008" },
@@ -261,7 +276,6 @@
             { name: "Imad El Merzouk", location: "MF1.2.033" },
             { name: "Iman Najim", location: "MF3.0.041" },
             { name: "Isabel Rios Trevino", location: "MF3.0.043" },
-            { name: "IT", location: "ADMIN, GF" },
             { name: "Ivan Stetsyuk", location: "MF3.2.015" },
             { name: "Jacklyn Gentile", location: "MF3.1.058" },
             { name: "Jalal Al Hallak", location: "MF2.1.029" },
@@ -292,7 +306,6 @@
             { name: "Leila atbi", location: "MF3.0.014" },
             { name: "Leonard Chirenje", location: "MF1.1.049" },
             { name: "Leyla Ozmeneskse", location: "MF1.1.058" },
-            { name: "Library", location: "1st, 2nd, 3rd Floors" },
             { name: "Lina Halimeh", location: "MF3.0.034" },
             { name: "Loulia Aravantinou Leonidi", location: "MF3.1.033" },
             { name: "Lyndsay Hartnack", location: "MF3.2.048" },
@@ -339,7 +352,6 @@
             { name: "Nusrat Begum", location: "MF1.1.057" },
             { name: "Ornanong Benbourenane", location: "MF1.2.043" },
             { name: "Park Beede", location: "MF2.2.056" },
-            { name: "Peer Assistance Leaders (PALs)", location: "LIBRARY, First Floor" },
             { name: "Pinar Ayber", location: "MF3.1.049" },
             { name: "Racha Elmajanini", location: "MF3.2.006" },
             { name: "Rachid Bentoumi", location: "MF2.1.012" },
@@ -347,7 +359,6 @@
             { name: "Rajiha Zoubi", location: "MF2.1.018" },
             { name: "Rania Abdel Maksoud", location: "MF3.2.037" },
             { name: "Ravishankar Sharma", location: "MF2.0.043" },
-            { name: "Registration", location: "ADMIN, First Floor" },
             { name: "Reem Almeesabi", location: "MF2.0.054" },
             { name: "Reem albayari", location: "MF3.2.021" },
             { name: "Reynold James", location: "MF2.2.029" },
@@ -372,12 +383,6 @@
             { name: "Simon Burfoot", location: "MF1.1.029" },
             { name: "Sirafima Lomonssova", location: "MF3.0.010" },
             { name: "Sonia Elhaj", location: "MF3.1.054" },
-            { name: "Sports Center", location: "FSP : Sports and Recreation Centre" },
-            { name: "Students Accessibility Services (SAS)", location: "LIBRARY, First Floor" },
-            { name: "Students Careers and Alumni Office", location: "MF3, GF" },
-            { name: "Students Counseling Center (SCC)", location: "ADMIN, First Floor" },
-            { name: "Students Leadership", location: "MF3, GF" },
-            { name: "Students Life", location: "MF3, 1st / 2nd Floor" },
             { name: "Sulaiman", location: "Manual Entry" },
             { name: "Suma Koralgundi", location: "MF3.0.037" },
             { name: "Sumbul Kabir Hasan", location: "MF3.2.050" },
@@ -385,14 +390,13 @@
             { name: "Suzanne Morrison", location: "MF1.2.053" },
             { name: "Suzanna El Massah", location: "MF3.1.035" },
             { name: "Talal AlMarashdi", location: "MF1.1.059" },
-            { name: "The Hub", location: "MF3, GF / FF3, GF" },
             { name: "Tony Myers", location: "MF1.1.021" },
             { name: "Valdimir Crupenschi", location: "MF3.2.043" },
+            { name: "Vasilia Alkhaldi", location: "MF3.1.018" },
             { name: "Veronika Pereseina", location: "MF1.1.047" },
             { name: "WalaaeldeenIbraheem", location: "MF1.2.037" },
             { name: "Walid Ben Salah", location: "MF1.2.031" },
             { name: "Wejdan Al Jaberi", location: "MF3.0.052" },
-            { name: "Wellness Center", location: "MF3, GF" },
             { name: "Ximena Cordova", location: "MF1.2.145" },
             { name: "Yaser Eliwa", location: "MF3.2.031" },
             { name: "Yi Zhang", location: "MF2.2.039" },
@@ -400,8 +404,11 @@
             { name: "Yousef Almansoori", location: "MF1.2.034" }
         ];
 
+        // Combine departments and sorted professors
+        const allItems = [...departments, ...professors];
+
         window.onload = function() {
-            renderList(departments);
+            renderList(allItems);
         };
 
         const listElement = document.getElementById('places-list');
@@ -422,7 +429,7 @@
 
         function filterLocations() {
             const query = searchInput.value.toLowerCase();
-            const filtered = departments.filter(dept => 
+            const filtered = allItems.filter(dept => 
                 dept.name.toLowerCase().includes(query)
             );
             renderList(filtered);
