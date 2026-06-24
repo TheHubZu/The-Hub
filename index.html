@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Hub - Zayed University</title>
     <style>
+        /* General Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #ffffff;
             color: #333;
             margin: 0;
@@ -17,7 +18,11 @@
             min-height: 100vh;
         }
 
-        header { text-align: center; margin-top: 40px; margin-bottom: 20px; }
+        header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
 
         .logo {
             width: 800px; 
@@ -29,6 +34,21 @@
             margin-right: auto;
         }
 
+        h1 {
+            color: #1a1a1a;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.5;
+            margin: 0 auto 30px auto;
+        }
+
+        /* Container */
         .container {
             width: 90%;
             max-width: 500px;
@@ -38,39 +58,17 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid #eee;
             position: relative;
-            padding-right: 40px;
         }
 
-        /* The real sidebar style with touch-action none to prevent page scroll while swiping */
-        #alphabet-index {
-            position: absolute;
-            right: 5px;
-            top: 100px;
-            bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 11px;
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: bold;
-            color: #b84e60;
-            cursor: pointer;
-            user-select: none;
-            touch-action: none; /* Prevents the screen from scrolling when sliding on the letters */
+            font-size: 14px;
         }
 
-        #alphabet-index span {
-            padding: 2px 5px;
-        }
-
-        #alphabet-index span:hover, #alphabet-index span.active-letter {
-            color: #984447;
-            background: #eee;
-            border-radius: 50%;
-            width: 15px;
-            text-align: center;
-        }
-
-        input[type="text"] {
+        select, input[type="password"], input[type="text"] {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
@@ -80,28 +78,162 @@
             box-sizing: border-box;
         }
 
+        select:focus, input:focus {
+            outline: none;
+            border-color: #b84e60; 
+            box-shadow: 0 0 5px rgba(184, 78, 96, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #b84e60; 
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #984447; 
+        }
+
+        .error-message {
+            color: red;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Main View */
+        #main-view {
+            display: none; 
+            position: relative;
+        }
+
+        #welcome-message {
+            margin-top: 0;
+            text-align: center;
+            color: #b84e60;
+            font-size: 22px;
+            line-height: 1.4;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* iPhone Contacts Style List Container */
+        .list-container {
+            position: relative;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            overflow: hidden;
+        }
+
         ul#places-list {
             list-style-type: none;
             padding: 0;
             margin: 0;
-            height: 300px;
+            height: 100%;
             overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background: white;
+            scroll-behavior: smooth; /* Smooth scrolling */
         }
 
-        ul#places-list li {
-            padding: 12px 15px;
+        /* Hide scrollbar for cleaner look (optional, but iPhone-like) */
+        ul#places-list::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Section Headers (A, B, C...) */
+        .list-header {
+            background-color: #f4f4f4;
+            color: #666;
+            font-weight: bold;
+            padding: 5px 15px;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10; /* Keep header on top while scrolling */
             border-bottom: 1px solid #eee;
-            cursor: pointer;
+            border-top: 1px solid #eee;
         }
 
-        ul#places-list li:hover { background-color: #fcf0f1; color: #b84e60; }
+        ul#places-list li.contact-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            margin-right: 25px; /* Space for the index */
+        }
+
+        ul#places-list li.contact-item:last-child {
+            border-bottom: none;
+        }
+
+        ul#places-list li.contact-item:hover {
+            background-color: #fcf0f1; 
+        }
+
+        /* The Alphabet Index Sidebar */
+        #alphabet-index {
+            position: absolute;
+            right: 5px;
+            top: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #b84e60;
+            cursor: pointer;
+            user-select: none;
+            touch-action: none; /* Crucial for touch dragging */
+            z-index: 20;
+        }
+
+        .index-letter {
+            width: 100%;
+            text-align: center;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bubble indicator for current letter while dragging */
+        #letter-indicator {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(184, 78, 96, 0.9);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 30;
+        }
 
         #location-result {
-            margin-top: 25px;
-            padding: 25px; 
+            margin-top: 20px;
+            padding: 20px; 
             background-color: #fcf0f1; 
             border-left: 5px solid #b84e60; 
             border-radius: 4px;
@@ -109,8 +241,18 @@
             text-align: center; 
         }
 
-        #location-result h3 { margin: 0 0 10px 0; color: #b84e60; font-size: 32px; }
-        #location-result p { margin: 0; font-size: 24px; color: #333; }
+        #location-result h3 {
+            margin: 0 0 10px 0;
+            color: #b84e60; 
+            font-size: 24px; 
+        }
+
+        #location-result p {
+            margin: 0;
+            font-size: 18px; 
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
@@ -120,11 +262,37 @@
     </header>
 
     <div class="container">
-        <div id="alphabet-index"></div>
+        <div id="login-view">
+            <label for="User">User</label>
+            <select id="User">
+                <option value="Sulaiman">Sulaiman</option>
+                <option value="Dhabia">Dhabia</option>
+                <option value="Mahra">Mahra</option>
+                <option value="Nouf">Nouf</option>
+                <option value="Salama">Salama</option>
+                <option value="Afra">Afra</option>
+                <option value="Fatima">Fatima</option>
+            </select>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            
+            <div id="error-msg" class="error-message">Incorrect password.</div>
+
+            <button onclick="login()">Log In</button>
+        </div>
 
         <div id="main-view">
-            <input type="text" id="search-bar" placeholder="Search..." oninput="filterLocations()">
-            <ul id="places-list"></ul>
+            <h2 id="welcome-message"></h2>
+            
+            <input type="text" id="search-bar" placeholder="Search..." oninput="handleSearch()">
+            
+            <div class="list-container">
+                <div id="letter-indicator">A</div>
+                <div id="alphabet-index"></div>
+                <ul id="places-list"></ul>
+            </div>
+
             <div id="location-result">
                 <h3 id="result-name"></h3>
                 <p id="result-location"></p>
@@ -369,82 +537,181 @@
             { name: "Yousef Almansoori", location: "MF1.2.034" }
         ];
 
+        // Ensure Departments are first, then Professors
         const allItems = [...departments, ...professors];
-        const indexContainer = document.getElementById('alphabet-index');
 
-        window.onload = function() {
-            renderList(allItems);
-            createIndex();
-        };
+        // The Alphabet Array
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-        // Swipe & scrub logic for alphabetical index
-        let isDragging = false;
+        function login() {
+            const User = document.getElementById('User').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
 
-        function createIndex() {
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            letters.forEach(letter => {
-                const span = document.createElement('span');
-                span.textContent = letter;
-                span.onclick = () => filterByLetter(letter);
-                indexContainer.appendChild(span);
-            });
+            const correctPassword = User + "!!";
 
-            // Pointer events for dragging/swiping like iPhone contacts
-            indexContainer.addEventListener('pointerdown', function(e) {
-                isDragging = true;
-                indexContainer.setPointerCapture(e.pointerId);
-                handleSwipe(e);
-            });
-
-            indexContainer.addEventListener('pointermove', function(e) {
-                if (isDragging) {
-                    handleSwipe(e);
-                }
-            });
-
-            indexContainer.addEventListener('pointerup', function(e) {
-                isDragging = false;
-                indexContainer.releasePointerCapture(e.pointerId);
-            });
-
-            indexContainer.addEventListener('pointercancel', function(e) {
-                isDragging = false;
-            });
-        }
-
-        function handleSwipe(e) {
-            e.preventDefault();
-            const elem = document.elementFromPoint(e.clientX, e.clientY);
-            if (elem && elem.tagName === 'SPAN' && elem.parentElement === indexContainer) {
-                filterByLetter(elem.textContent);
+            if (password === correctPassword) {
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('main-view').style.display = 'block';
+                
+                // Welcome user
+                const welcomeMsg = document.getElementById('welcome-message');
+                welcomeMsg.innerHTML = "Welcome " + User + "!<br>What place are you looking for?";
+                
+                // Render List with Headers
+                renderListWithHeaders(allItems);
+                createAlphabetIndex();
+            } else {
+                errorMsg.style.display = 'block';
             }
         }
 
-        function filterByLetter(letter) {
-            const filtered = allItems.filter(item => 
-                item.name.toUpperCase().startsWith(letter)
-            );
-            renderList(filtered);
-            document.getElementById('location-result').style.display = 'none';
+        // Functions to Group data by starting letter
+        function groupData(items) {
+            const grouped = {};
+            
+            // Put departments in a special category at the top
+            grouped['Departments'] = items.filter(item => departments.includes(item));
+            
+            // Group professors by letter
+            const profs = items.filter(item => professors.includes(item));
+            alphabet.forEach(letter => {
+                const startsWithLetter = profs.filter(item => item.name.toUpperCase().startsWith(letter));
+                if (startsWithLetter.length > 0) {
+                    grouped[letter] = startsWithLetter;
+                }
+            });
+
+            return grouped;
         }
 
-        function renderList(items) {
+        function renderListWithHeaders(items) {
             const listElement = document.getElementById('places-list');
             listElement.innerHTML = ''; 
-            items.forEach(dept => {
-                const li = document.createElement('li');
-                li.textContent = dept.name;
-                li.onclick = () => showLocation(dept);
-                listElement.appendChild(li);
-            });
+
+            const groupedData = groupData(items);
+
+            for (const [groupName, groupItems] of Object.entries(groupedData)) {
+                if (groupItems.length > 0) {
+                    // Create Header (A, B, C or Departments)
+                    const headerLi = document.createElement('li');
+                    headerLi.className = 'list-header';
+                    // We assign an ID to the header so we can scroll to it
+                    headerLi.id = 'header-' + groupName; 
+                    headerLi.textContent = groupName;
+                    listElement.appendChild(headerLi);
+
+                    // Create Items under Header
+                    groupItems.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'contact-item';
+                        li.textContent = item.name;
+                        li.onclick = () => showLocation(item);
+                        listElement.appendChild(li);
+                    });
+                }
+            }
         }
 
-        function filterLocations() {
+        // --- iPhone Slider Logic ---
+        let isDragging = false;
+
+        function createAlphabetIndex() {
+            const indexContainer = document.getElementById('alphabet-index');
+            indexContainer.innerHTML = ''; // Clear if re-rendered
+
+            alphabet.forEach(letter => {
+                const span = document.createElement('span');
+                span.className = 'index-letter';
+                span.dataset.letter = letter; // Store letter for touch logic
+                span.textContent = letter;
+                
+                // Click logic for Desktop
+                span.onclick = () => scrollToLetter(letter);
+                indexContainer.appendChild(span);
+            });
+
+            // Touch & Drag logic for Mobile (iPhone behavior)
+            indexContainer.addEventListener('pointerdown', handlePointerDown);
+            indexContainer.addEventListener('pointermove', handlePointerMove);
+            window.addEventListener('pointerup', handlePointerUp);
+            window.addEventListener('pointercancel', handlePointerUp);
+        }
+
+        function handlePointerDown(e) {
+            isDragging = true;
+            document.getElementById('alphabet-index').setPointerCapture(e.pointerId);
+            processTouch(e);
+        }
+
+        function handlePointerMove(e) {
+            if (!isDragging) return;
+            e.preventDefault(); // Prevent page scroll while dragging index
+            processTouch(e);
+        }
+
+        function handlePointerUp(e) {
+            isDragging = false;
+            document.getElementById('letter-indicator').style.opacity = '0';
+        }
+
+        function processTouch(e) {
+            const element = document.elementFromPoint(e.clientX, e.clientY);
+            if (element && element.classList.contains('index-letter')) {
+                const letter = element.dataset.letter;
+                
+                // Show floating bubble indicator
+                const indicator = document.getElementById('letter-indicator');
+                indicator.textContent = letter;
+                
+                // Calculate position for bubble to follow finger
+                const rect = element.getBoundingClientRect();
+                const containerRect = document.querySelector('.list-container').getBoundingClientRect();
+                // Position relative to the container
+                indicator.style.top = (rect.top - containerRect.top + (rect.height / 2)) + 'px';
+                indicator.style.opacity = '1';
+
+                scrollToLetter(letter);
+            }
+        }
+
+        function scrollToLetter(letter) {
+            const header = document.getElementById('header-' + letter);
+            if (header) {
+                const list = document.getElementById('places-list');
+                // Calculate position of header relative to the scrolling list container
+                const listRect = list.getBoundingClientRect();
+                const headerRect = header.getBoundingClientRect();
+                
+                // Scroll to the specific position
+                list.scrollTop = list.scrollTop + (headerRect.top - listRect.top);
+            }
+        }
+
+        // --- Search Logic (Filters Full List) ---
+        function handleSearch() {
             const query = document.getElementById('search-bar').value.toLowerCase();
-            const filtered = allItems.filter(dept => 
-                dept.name.toLowerCase().includes(query)
+            if (query.trim() === '') {
+                // If search is empty, show full grouped list
+                renderListWithHeaders(allItems);
+                return;
+            }
+
+            // If searching, show a flat filtered list without A-Z headers
+            const filtered = allItems.filter(item => 
+                item.name.toLowerCase().includes(query)
             );
-            renderList(filtered);
+            
+            const listElement = document.getElementById('places-list');
+            listElement.innerHTML = '';
+            filtered.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'contact-item';
+                li.textContent = item.name;
+                li.onclick = () => showLocation(item);
+                listElement.appendChild(li);
+            });
+            
             document.getElementById('location-result').style.display = 'none';
         }
 
