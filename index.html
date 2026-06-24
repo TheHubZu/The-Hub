@@ -17,11 +17,7 @@
             min-height: 100vh;
         }
 
-        header {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
+        header { text-align: center; margin-top: 40px; margin-bottom: 20px; }
 
         .logo {
             width: 800px; 
@@ -33,20 +29,6 @@
             margin-right: auto;
         }
 
-        h1 {
-            color: #1a1a1a;
-            font-size: 24px;
-            margin: 0 0 10px 0;
-        }
-
-        p.subtitle {
-            color: #666;
-            font-size: 14px;
-            max-width: 400px;
-            line-height: 1.5;
-            margin: 0 auto 30px auto;
-        }
-
         .container {
             width: 90%;
             max-width: 500px;
@@ -56,24 +38,31 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid #eee;
             position: relative;
+            padding-right: 40px;
         }
 
-        /* Sidebar Index Styles */
+        /* The real sidebar style */
         #alphabet-index {
             position: absolute;
             right: 5px;
-            top: 80px;
+            top: 100px;
+            bottom: 50px;
             display: flex;
             flex-direction: column;
-            font-size: 12px;
+            justify-content: space-between;
+            font-size: 11px;
             font-weight: bold;
             color: #b84e60;
             cursor: pointer;
+            user-select: none;
         }
 
         #alphabet-index span:hover {
             color: #984447;
-            transform: scale(1.2);
+            background: #eee;
+            border-radius: 50%;
+            width: 15px;
+            text-align: center;
         }
 
         input[type="text"] {
@@ -86,27 +75,15 @@
             box-sizing: border-box;
         }
 
-        #main-view { display: block; }
-
-        #welcome-message {
-            margin-top: 0;
-            text-align: center;
-            color: #b84e60;
-            font-size: 22px;
-            line-height: 1.4;
-            font-weight: bold;
-        }
-
         ul#places-list {
             list-style-type: none;
             padding: 0;
             margin: 0;
-            max-height: 250px;
+            height: 300px;
             overflow-y: auto;
             border: 1px solid #ddd;
             border-radius: 6px;
             background: white;
-            padding-right: 20px; /* Space for index */
         }
 
         ul#places-list li {
@@ -115,10 +92,7 @@
             cursor: pointer;
         }
 
-        ul#places-list li:hover {
-            background-color: #fcf0f1; 
-            color: #b84e60; 
-        }
+        ul#places-list li:hover { background-color: #fcf0f1; color: #b84e60; }
 
         #location-result {
             margin-top: 25px;
@@ -135,24 +109,17 @@
 
     <header>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGb8nhZ_teZfo9uiZh5pA5vjoSRo9h5EKvBQ&s" alt="The Hub Logo" class="logo">
-        <div id="intro-text">
-            <h1>Welcome to The Hub</h1>
-            <p class="subtitle">Navigate Your Way Through Campus<br>Your journey starts here—a guide provided by The Hub</p>
-        </div>
     </header>
 
     <div class="container">
         <div id="alphabet-index"></div>
 
         <div id="main-view">
-            <h2 id="welcome-message">Find a Location</h2>
-            <input type="text" id="search-bar" placeholder="Search for a department or center..." oninput="filterLocations()">
-            
+            <input type="text" id="search-bar" placeholder="Search..." oninput="filterLocations()">
             <ul id="places-list"></ul>
-
             <div id="location-result">
-                <h3 id="result-name">Department Name</h3>
-                <p id="result-location">Location details will appear here.</p>
+                <h3 id="result-name"></h3>
+                <p id="result-location"></p>
             </div>
         </div>
     </div>
