@@ -55,13 +55,25 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid #eee;
+            position: relative;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
+        /* Sidebar Index Styles */
+        #alphabet-index {
+            position: absolute;
+            right: 5px;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
             font-weight: bold;
-            font-size: 14px;
+            color: #b84e60;
+            cursor: pointer;
+        }
+
+        #alphabet-index span:hover {
+            color: #984447;
+            transform: scale(1.2);
         }
 
         input[type="text"] {
@@ -74,15 +86,7 @@
             box-sizing: border-box;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #b84e60; 
-            box-shadow: 0 0 5px rgba(184, 78, 96, 0.2);
-        }
-
-        #main-view {
-            display: block; 
-        }
+        #main-view { display: block; }
 
         #welcome-message {
             margin-top: 0;
@@ -102,17 +106,13 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             background: white;
+            padding-right: 20px; /* Space for index */
         }
 
         ul#places-list li {
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
             cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        ul#places-list li:last-child {
-            border-bottom: none;
         }
 
         ul#places-list li:hover {
@@ -129,25 +129,12 @@
             display: none;
             text-align: center; 
         }
-
-        #location-result h3 {
-            margin: 0 0 10px 0;
-            color: #b84e60; 
-            font-size: 32px; 
-        }
-
-        #location-result p {
-            margin: 0;
-            font-size: 24px; 
-            color: #333;
-        }
     </style>
 </head>
 <body>
 
     <header>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGb8nhZ_teZfo9uiZh5pA5vjoSRo9h5EKvBQ&s" alt="The Hub Logo" class="logo">
-        
         <div id="intro-text">
             <h1>Welcome to The Hub</h1>
             <p class="subtitle">Navigate Your Way Through Campus<br>Your journey starts here—a guide provided by The Hub</p>
@@ -155,6 +142,8 @@
     </header>
 
     <div class="container">
+        <div id="alphabet-index"></div>
+
         <div id="main-view">
             <h2 id="welcome-message">Find a Location</h2>
             <input type="text" id="search-bar" placeholder="Search for a department or center..." oninput="filterLocations()">
@@ -359,6 +348,7 @@
             { name: "Rajiha Zoubi", location: "MF2.1.018" },
             { name: "Rania Abdel Maksoud", location: "MF3.2.037" },
             { name: "Ravishankar Sharma", location: "MF2.0.043" },
+            { name: "Registration", location: "ADMIN, First Floor" },
             { name: "Reem Almeesabi", location: "MF2.0.054" },
             { name: "Reem albayari", location: "MF3.2.021" },
             { name: "Reynold James", location: "MF2.2.029" },
@@ -383,6 +373,12 @@
             { name: "Simon Burfoot", location: "MF1.1.029" },
             { name: "Sirafima Lomonssova", location: "MF3.0.010" },
             { name: "Sonia Elhaj", location: "MF3.1.054" },
+            { name: "Sports Center", location: "FSP : Sports and Recreation Centre" },
+            { name: "Students Accessibility Services (SAS)", location: "LIBRARY, First Floor" },
+            { name: "Students Careers and Alumni Office", location: "MF3, GF" },
+            { name: "Students Counseling Center (SCC)", location: "ADMIN, First Floor" },
+            { name: "Students Leadership", location: "MF3, GF" },
+            { name: "Students Life", location: "MF3, 1st / 2nd Floor" },
             { name: "Sulaiman", location: "Manual Entry" },
             { name: "Suma Koralgundi", location: "MF3.0.037" },
             { name: "Sumbul Kabir Hasan", location: "MF3.2.050" },
@@ -390,6 +386,7 @@
             { name: "Suzanne Morrison", location: "MF1.2.053" },
             { name: "Suzanna El Massah", location: "MF3.1.035" },
             { name: "Talal AlMarashdi", location: "MF1.1.059" },
+            { name: "The Hub", location: "MF3, GF / FF3, GF" },
             { name: "Tony Myers", location: "MF1.1.021" },
             { name: "Valdimir Crupenschi", location: "MF3.2.043" },
             { name: "Vasilia Alkhaldi", location: "MF3.1.018" },
@@ -397,6 +394,7 @@
             { name: "WalaaeldeenIbraheem", location: "MF1.2.037" },
             { name: "Walid Ben Salah", location: "MF1.2.031" },
             { name: "Wejdan Al Jaberi", location: "MF3.0.052" },
+            { name: "Wellness Center", location: "MF3, GF" },
             { name: "Ximena Cordova", location: "MF1.2.145" },
             { name: "Yaser Eliwa", location: "MF3.2.031" },
             { name: "Yi Zhang", location: "MF2.2.039" },
@@ -404,20 +402,34 @@
             { name: "Yousef Almansoori", location: "MF1.2.034" }
         ];
 
-        // Combine departments and sorted professors
         const allItems = [...departments, ...professors];
+        const indexContainer = document.getElementById('alphabet-index');
 
         window.onload = function() {
             renderList(allItems);
+            createIndex();
         };
 
-        const listElement = document.getElementById('places-list');
-        const searchInput = document.getElementById('search-bar');
-        const resultDiv = document.getElementById('location-result');
-        const resultName = document.getElementById('result-name');
-        const resultLocation = document.getElementById('result-location');
+        function createIndex() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            letters.forEach(letter => {
+                const span = document.createElement('span');
+                span.textContent = letter;
+                span.onclick = () => filterByLetter(letter);
+                indexContainer.appendChild(span);
+            });
+        }
+
+        function filterByLetter(letter) {
+            const filtered = allItems.filter(item => 
+                item.name.toUpperCase().startsWith(letter)
+            );
+            renderList(filtered);
+            document.getElementById('location-result').style.display = 'none';
+        }
 
         function renderList(items) {
+            const listElement = document.getElementById('places-list');
             listElement.innerHTML = ''; 
             items.forEach(dept => {
                 const li = document.createElement('li');
@@ -428,18 +440,18 @@
         }
 
         function filterLocations() {
-            const query = searchInput.value.toLowerCase();
+            const query = document.getElementById('search-bar').value.toLowerCase();
             const filtered = allItems.filter(dept => 
                 dept.name.toLowerCase().includes(query)
             );
             renderList(filtered);
-            resultDiv.style.display = 'none';
+            document.getElementById('location-result').style.display = 'none';
         }
 
         function showLocation(department) {
-            resultName.textContent = department.name;
-            resultLocation.textContent = "Location: " + department.location;
-            resultDiv.style.display = 'block';
+            document.getElementById('result-name').textContent = department.name;
+            document.getElementById('result-location').textContent = "Location: " + department.location;
+            document.getElementById('location-result').style.display = 'block';
         }
     </script>
 </body>
