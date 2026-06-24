@@ -41,7 +41,7 @@
             padding-right: 40px;
         }
 
-        /* The real sidebar style */
+        /* The real sidebar style with touch-action none to prevent page scroll while swiping */
         #alphabet-index {
             position: absolute;
             right: 5px;
@@ -55,9 +55,14 @@
             color: #b84e60;
             cursor: pointer;
             user-select: none;
+            touch-action: none; /* Prevents the screen from scrolling when sliding on the letters */
         }
 
-        #alphabet-index span:hover {
+        #alphabet-index span {
+            padding: 2px 5px;
+        }
+
+        #alphabet-index span:hover, #alphabet-index span.active-letter {
             color: #984447;
             background: #eee;
             border-radius: 50%;
@@ -103,6 +108,9 @@
             display: none;
             text-align: center; 
         }
+
+        #location-result h3 { margin: 0 0 10px 0; color: #b84e60; font-size: 32px; }
+        #location-result p { margin: 0; font-size: 24px; color: #333; }
     </style>
 </head>
 <body>
@@ -340,12 +348,6 @@
             { name: "Simon Burfoot", location: "MF1.1.029" },
             { name: "Sirafima Lomonssova", location: "MF3.0.010" },
             { name: "Sonia Elhaj", location: "MF3.1.054" },
-            { name: "Sports Center", location: "FSP : Sports and Recreation Centre" },
-            { name: "Students Accessibility Services (SAS)", location: "LIBRARY, First Floor" },
-            { name: "Students Careers and Alumni Office", location: "MF3, GF" },
-            { name: "Students Counseling Center (SCC)", location: "ADMIN, First Floor" },
-            { name: "Students Leadership", location: "MF3, GF" },
-            { name: "Students Life", location: "MF3, 1st / 2nd Floor" },
             { name: "Sulaiman", location: "Manual Entry" },
             { name: "Suma Koralgundi", location: "MF3.0.037" },
             { name: "Sumbul Kabir Hasan", location: "MF3.2.050" },
@@ -353,7 +355,6 @@
             { name: "Suzanne Morrison", location: "MF1.2.053" },
             { name: "Suzanna El Massah", location: "MF3.1.035" },
             { name: "Talal AlMarashdi", location: "MF1.1.059" },
-            { name: "The Hub", location: "MF3, GF / FF3, GF" },
             { name: "Tony Myers", location: "MF1.1.021" },
             { name: "Valdimir Crupenschi", location: "MF3.2.043" },
             { name: "Vasilia Alkhaldi", location: "MF3.1.018" },
@@ -361,7 +362,6 @@
             { name: "WalaaeldeenIbraheem", location: "MF1.2.037" },
             { name: "Walid Ben Salah", location: "MF1.2.031" },
             { name: "Wejdan Al Jaberi", location: "MF3.0.052" },
-            { name: "Wellness Center", location: "MF3, GF" },
             { name: "Ximena Cordova", location: "MF1.2.145" },
             { name: "Yaser Eliwa", location: "MF3.2.031" },
             { name: "Yi Zhang", location: "MF2.2.039" },
@@ -377,6 +377,9 @@
             createIndex();
         };
 
+        // Swipe & scrub logic for alphabetical index
+        let isDragging = false;
+
         function createIndex() {
             const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
             letters.forEach(letter => {
@@ -385,6 +388,36 @@
                 span.onclick = () => filterByLetter(letter);
                 indexContainer.appendChild(span);
             });
+
+            // Pointer events for dragging/swiping like iPhone contacts
+            indexContainer.addEventListener('pointerdown', function(e) {
+                isDragging = true;
+                indexContainer.setPointerCapture(e.pointerId);
+                handleSwipe(e);
+            });
+
+            indexContainer.addEventListener('pointermove', function(e) {
+                if (isDragging) {
+                    handleSwipe(e);
+                }
+            });
+
+            indexContainer.addEventListener('pointerup', function(e) {
+                isDragging = false;
+                indexContainer.releasePointerCapture(e.pointerId);
+            });
+
+            indexContainer.addEventListener('pointercancel', function(e) {
+                isDragging = false;
+            });
+        }
+
+        function handleSwipe(e) {
+            e.preventDefault();
+            const elem = document.elementFromPoint(e.clientX, e.clientY);
+            if (elem && elem.tagName === 'SPAN' && elem.parentElement === indexContainer) {
+                filterByLetter(elem.textContent);
+            }
         }
 
         function filterByLetter(letter) {
@@ -417,7 +450,12 @@
 
         function showLocation(department) {
             document.getElementById('result-name').textContent = department.name;
-            document.getElementById('result-location').textContent = "Location: " + department.location;
+            let formattedLocation = department.location;
+            if(formattedLocation === "ADMIN, GF") formattedLocation = "Administration Building, Ground Floor (GF)";
+            if(formattedLocation === "ADMIN, First Floor") formattedLocation = "Administration Building, First Floor";
+            if(formattedLocation === "LIBRARY, First Floor") formattedLocation = "Library Building, First Floor";
+            
+            document.getElementById('result-location').textContent = "Location: " + formattedLocation;
             document.getElementById('location-result').style.display = 'block';
         }
     </script>
