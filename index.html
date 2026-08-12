@@ -17,7 +17,11 @@
             min-height: 100vh;
         }
 
-        header { text-align: center; margin-top: 40px; margin-bottom: 20px; }
+        header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
 
         .logo {
             width: 800px; 
@@ -29,6 +33,20 @@
             margin-right: auto;
         }
 
+        h1 {
+            color: #1a1a1a;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.5;
+            margin: 0 auto 30px auto;
+        }
+
         .container {
             width: 90%;
             max-width: 500px;
@@ -37,37 +55,13 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid #eee;
-            position: relative;
-            padding-right: 40px;
         }
 
-        /* The real sidebar style with touch-action none to prevent page scroll while swiping */
-        #alphabet-index {
-            position: absolute;
-            right: 5px;
-            top: 100px;
-            bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 11px;
+        label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: bold;
-            color: #b84e60;
-            cursor: pointer;
-            user-select: none;
-            touch-action: none; /* Prevents the screen from scrolling when sliding on the letters */
-        }
-
-        #alphabet-index span {
-            padding: 2px 5px;
-        }
-
-        #alphabet-index span:hover, #alphabet-index span.active-letter {
-            color: #984447;
-            background: #eee;
-            border-radius: 50%;
-            width: 15px;
-            text-align: center;
+            font-size: 14px;
         }
 
         input[type="text"] {
@@ -80,11 +74,30 @@
             box-sizing: border-box;
         }
 
+        input:focus {
+            outline: none;
+            border-color: #b84e60; 
+            box-shadow: 0 0 5px rgba(184, 78, 96, 0.2);
+        }
+
+        #main-view {
+            display: block; 
+        }
+
+        #welcome-message {
+            margin-top: 0;
+            text-align: center;
+            color: #b84e60;
+            font-size: 22px;
+            line-height: 1.4;
+            font-weight: bold;
+        }
+
         ul#places-list {
             list-style-type: none;
             padding: 0;
             margin: 0;
-            height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -95,9 +108,17 @@
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        ul#places-list li:hover { background-color: #fcf0f1; color: #b84e60; }
+        ul#places-list li:last-child {
+            border-bottom: none;
+        }
+
+        ul#places-list li:hover {
+            background-color: #fcf0f1; 
+            color: #b84e60; 
+        }
 
         #location-result {
             margin-top: 25px;
@@ -109,25 +130,40 @@
             text-align: center; 
         }
 
-        #location-result h3 { margin: 0 0 10px 0; color: #b84e60; font-size: 32px; }
-        #location-result p { margin: 0; font-size: 24px; color: #333; }
+        #location-result h3 {
+            margin: 0 0 10px 0;
+            color: #b84e60; 
+            font-size: 32px; 
+        }
+
+        #location-result p {
+            margin: 0;
+            font-size: 24px; 
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGb8nhZ_teZfo9uiZh5pA5vjoSRo9h5EKvBQ&s" alt="The Hub Logo" class="logo">
+        
+        <div id="intro-text">
+            <h1>Welcome to The Hub</h1>
+            <p class="subtitle">Navigate Your Way Through Campus<br>Your journey starts here—a guide provided by The Hub</p>
+        </div>
     </header>
 
     <div class="container">
-        <div id="alphabet-index"></div>
-
         <div id="main-view">
-            <input type="text" id="search-bar" placeholder="Search..." oninput="filterLocations()">
+            <h2 id="welcome-message">Find a Location</h2>
+            <input type="text" id="search-bar" placeholder="Search for a department or center..." oninput="filterLocations()">
+            
             <ul id="places-list"></ul>
+
             <div id="location-result">
-                <h3 id="result-name"></h3>
-                <p id="result-location"></p>
+                <h3 id="result-name">Department Name</h3>
+                <p id="result-location">Location details will appear here.</p>
             </div>
         </div>
     </div>
@@ -323,7 +359,6 @@
             { name: "Rajiha Zoubi", location: "MF2.1.018" },
             { name: "Rania Abdel Maksoud", location: "MF3.2.037" },
             { name: "Ravishankar Sharma", location: "MF2.0.043" },
-            { name: "Registration", location: "ADMIN, First Floor" },
             { name: "Reem Almeesabi", location: "MF2.0.054" },
             { name: "Reem albayari", location: "MF3.2.021" },
             { name: "Reynold James", location: "MF2.2.029" },
@@ -369,67 +404,20 @@
             { name: "Yousef Almansoori", location: "MF1.2.034" }
         ];
 
+        // Combine departments and sorted professors
         const allItems = [...departments, ...professors];
-        const indexContainer = document.getElementById('alphabet-index');
 
         window.onload = function() {
             renderList(allItems);
-            createIndex();
         };
 
-        // Swipe & scrub logic for alphabetical index
-        let isDragging = false;
-
-        function createIndex() {
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-            letters.forEach(letter => {
-                const span = document.createElement('span');
-                span.textContent = letter;
-                span.onclick = () => filterByLetter(letter);
-                indexContainer.appendChild(span);
-            });
-
-            // Pointer events for dragging/swiping like iPhone contacts
-            indexContainer.addEventListener('pointerdown', function(e) {
-                isDragging = true;
-                indexContainer.setPointerCapture(e.pointerId);
-                handleSwipe(e);
-            });
-
-            indexContainer.addEventListener('pointermove', function(e) {
-                if (isDragging) {
-                    handleSwipe(e);
-                }
-            });
-
-            indexContainer.addEventListener('pointerup', function(e) {
-                isDragging = false;
-                indexContainer.releasePointerCapture(e.pointerId);
-            });
-
-            indexContainer.addEventListener('pointercancel', function(e) {
-                isDragging = false;
-            });
-        }
-
-        function handleSwipe(e) {
-            e.preventDefault();
-            const elem = document.elementFromPoint(e.clientX, e.clientY);
-            if (elem && elem.tagName === 'SPAN' && elem.parentElement === indexContainer) {
-                filterByLetter(elem.textContent);
-            }
-        }
-
-        function filterByLetter(letter) {
-            const filtered = allItems.filter(item => 
-                item.name.toUpperCase().startsWith(letter)
-            );
-            renderList(filtered);
-            document.getElementById('location-result').style.display = 'none';
-        }
+        const listElement = document.getElementById('places-list');
+        const searchInput = document.getElementById('search-bar');
+        const resultDiv = document.getElementById('location-result');
+        const resultName = document.getElementById('result-name');
+        const resultLocation = document.getElementById('result-location');
 
         function renderList(items) {
-            const listElement = document.getElementById('places-list');
             listElement.innerHTML = ''; 
             items.forEach(dept => {
                 const li = document.createElement('li');
@@ -440,23 +428,18 @@
         }
 
         function filterLocations() {
-            const query = document.getElementById('search-bar').value.toLowerCase();
+            const query = searchInput.value.toLowerCase();
             const filtered = allItems.filter(dept => 
                 dept.name.toLowerCase().includes(query)
             );
             renderList(filtered);
-            document.getElementById('location-result').style.display = 'none';
+            resultDiv.style.display = 'none';
         }
 
         function showLocation(department) {
-            document.getElementById('result-name').textContent = department.name;
-            let formattedLocation = department.location;
-            if(formattedLocation === "ADMIN, GF") formattedLocation = "Administration Building, Ground Floor (GF)";
-            if(formattedLocation === "ADMIN, First Floor") formattedLocation = "Administration Building, First Floor";
-            if(formattedLocation === "LIBRARY, First Floor") formattedLocation = "Library Building, First Floor";
-            
-            document.getElementById('result-location').textContent = "Location: " + formattedLocation;
-            document.getElementById('location-result').style.display = 'block';
+            resultName.textContent = department.name;
+            resultLocation.textContent = "Location: " + department.location;
+            resultDiv.style.display = 'block';
         }
     </script>
 </body>
